@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{%load static%}
+
+<script>
+  document.getElementById('features').className = "nav-link active";
+</script>
+
+<style>
+  body::before {
+    content: '';
+    background: url('https://live.staticflickr.com/65535/52078080915_d8e040753c_4k.jpg') ;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    opacity: 0.2;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+</style>
+
+<link href="{% static 'cool_fts/styles/table.css' %}" rel="stylesheet" />
+<div class="container justify-content-center my-2">
+
+  <!--
+    <style>      
+    @keyframes slideInLeft {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
+    body {
+      animation: 1s ease-out 0s 1 slideInLeft;
+    }
+  </style>
+  -->
+  
+  <div class="row g-5" id="xyz">
+    <div class="col-md-8">
+      <nav class="navbar nav-masthead justify-content-center" id="nav2">
+        <a style="cursor:pointer ;" onclick="navMovie();" id="movie-select" class="nav-link active"
+          aria-current="page">Movies</a>
+        <a style="cursor:pointer ;" onclick="navTv();" id="tv-select" class="nav-link">TV Shows</a>
+      </nav>
+      <!-----------------Movies tab------------->
+      <div class="container p-2" id="Movies" style="width:fit-content; height: auto; border: 2px solid;">
+        <!--<table class="table table-hover">
+          <thead>
+      <tr>
+          <th class="text-white" scope="col"><a title="Top 100 movies(IMDB)" style="text-decoration: none; color: inherit;" href="/features/movies">TOP 100 IMDB MOVIES</a></th>
+          
+      </tr>
+      </thead>
+      <tbody>
+          {% for name,link in names_links%}
+          <tr>
+              <th class="text-white" scope="row"><a target="_blank" style="text-decoration: none; color: inherit;" href="{{link}}">{{name}}</a></th>
+              
+          </tr>
+          {%endfor%}
+  
+          
+      </tbody>
+  
+      
+      </table>
+      <ul class="pagination">
+          {%if page.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+              <span aria-hidden="true">First</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{page.previous_page_number}}" aria-label="Previous">
+              <span aria-hidden="true">Previous</span>
+            </a>        
+          </li>
+          {%else%}        
+          
+          <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+          </li>
+          {%endif%}
+          
+          {%if page.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{page.next_page_number}}" aria-label="Next">
+              <span aria-hidden="true">Next</span>
+            </a>
+          </li>
+          <li class="page-item">
+            <a class="page-link" href="?page={{count}}" aria-label="Last">
+              <span aria-hidden="true">Last</span>
+            </a>
+          </li>
+          {%else%}
+          <li class="page-item disabled">
+            <a class="page-link">Next</a>
+          </li>
+          {%endif%}
+      </ul>  
+      -->
+
+        <h2>Which movie to watch today?</h2>
+        <p class="text-muted">(Best suggestions among Popular movies)</p>
+        <div class="mx-auto" style="width:max-content;">
+          <select class="form-select mb-2" onchange="changesuggestion();" name="genre" id="genre"
+            aria-label=".form-select-sm example">
+            <option selected disabled value="">--Select Genre--</option>
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="animation">Animation</option>
+            <option value="anime">Anime</option>
+            <option value="biography">Biography</option>
+            <option value="comedy">Comedy</option>
+            <option value="crime">Crime</option>
+            <option value="documentary">Documentary</option>
+            <option value="drama">Drama</option>
+            <option value="faith_and_spirituality">Faith And Spirituality</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="foreign">Foreign</option>
+            <option value="game_show">Game Show</option>
+            <option value="lgbtq">Lgbtq</option>
+            <option value="health_and_wellness">Health And Wellness</option>
+            <option value="history">History</option>
+            <option value="horror">Horror</option>
+            <option value="house_and_garden">House And Garden</option>
+            <option value="independent">Independent</option>
+            <option value="kids_and_family">Kids And Family</option>
+            <option value="music">Music</option>
+            <option value="musical">Musical</option>
+            <option value="mystery_and_thriller">Mystery And Thriller</option>
+            <option value="nature">Nature</option>
+            <option value="news">News</option>
+            <option value="other">Other</option>
+            <option value="reality">Reality</option>
+            <option value="romance">Romance</option>
+            <option value="sci_fi">Sci Fi</option>
+            <option value="short">Short</option>
+            <option value="soap">Soap</option>
+            <option value="special_interest">Special Interest</option>
+            <option value="sports_and_fitness">Sports And Fitness</option>
+            <option value="stand_up">Stand Up</option>
+            <option value="talk_show">Talk Show</option>
+            <option value="travel">Travel</option>
+            <option value="variety">Variety</option>
+            <option value="war">War</option>
+            <option value="western">Western</option>
+          </select>
+
+        </div>
+
+        <div id="loader">
+          <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        <div class="container p-2">
+          <p id="suggest" hidden><span><strong></strong></span>
+
+          </p>
+
+        </div>
+
+        <p id="noResult" hidden></p>
+      </div>
+      <!-----------------Movie tab------------->
+
+      <!-----------------Hidden TV tab------------->
+
+      <div class="container p-2" hidden id="TVshows" style="width:fit-content; height: auto; border: 2px solid; ">
+        <h2>Which TV Shows to watch today?</h2>
+        <p class="text-muted">(Best suggestions among Popular TV shows)</p>
+        <div class="mx-auto" style="width:max-content;">
+          <select class="form-select mb-2" onchange="changetv();" name="genre" id="genretv"
+            aria-label=".form-select-sm example">
+            <option selected disabled value="">--Select Genre--</option>
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="animation">Animation</option>
+            <option value="anime">Anime</option>
+            <option value="biography">Biography</option>
+            <option value="comedy">Comedy</option>
+            <option value="crime">Crime</option>
+            <option value="documentary">Documentary</option>
+            <option value="drama">Drama</option>
+            <option value="faith_and_spirituality">Faith And Spirituality</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="foreign">Foreign</option>
+            <option value="game_show">Game Show</option>
+            <option value="lgbtq">Lgbtq</option>
+            <option value="health_and_wellness">Health And Wellness</option>
+            <option value="history">History</option>
+            <option value="horror">Horror</option>
+            <option value="house_and_garden">House And Garden</option>
+            <option value="independent">Independent</option>
+            <option value="kids_and_family">Kids And Family</option>
+            <option value="music">Music</option>
+            <option value="musical">Musical</option>
+            <option value="mystery_and_thriller">Mystery And Thriller</option>
+            <option value="nature">Nature</option>
+            <option value="news">News</option>
+            <option value="other">Other</option>
+            <option value="reality">Reality</option>
+            <option value="romance">Romance</option>
+            <option value="sci_fi">Sci Fi</option>
+            <option value="short">Short</option>
+            <option value="soap">Soap</option>
+            <option value="special_interest">Special Interest</option>
+            <option value="sports_and_fitness">Sports And Fitness</option>
+            <option value="stand_up">Stand Up</option>
+            <option value="talk_show">Talk Show</option>
+            <option value="travel">Travel</option>
+            <option value="variety">Variety</option>
+            <option value="war">War</option>
+            <option value="western">Western</option>
+          </select>
+          <div id="suggestions-tv">
+            <a href="" style="text-decoration:none; color: inherit;" target="_blank">
+              <p></p>
+            </a>
+            <img src="" alt="" width="180" height="258">
+            <div id="information-tv">
+
+            </div>
+            <br><button class="btn btn-outline-light btn-sm mt-1" type="button" onclick="shuffletv();"
+              id="tv-shuffle-btn" hidden>Other option</button>
+          </div>
+          <p id="noResult-tv">
+            No suggestion this time <br><span class="text-muted">(Try again later)</span>
+          </p>
+
+          <div id="loadertv" hidden>
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
+          <div hidden>
+            <a href="https://icons8.com/icon/12246/imdb">IMDb icon by Icons8</a>
+            <a href="https://icons8.com/icon/BkWfN4ADvwXc/tomato">Tomato icon by Icons8</a>
+          </div>
+        </div>
+
+      </div>
+      <!-----------------TV tab------------->
+    </div>
+
+    <!-----------------Side Bar------------->
+
+    <div class="col-md-3">
+      <div class="position-sticky fst-italic mt-5" style="top: 2rem;  text-align: left; border-radius: 0.5rem; background-color:rgba(168, 168, 168, 0.2); --bs-bg-opacity: 1;">
+        <div class="py-4 mx-4" style="border-bottom:1px solid ;">
+          <h4 class="">About</h4>
+          <p class="mb-0">This page can help you to decide on what movie/TV series you should watch.</p>
+        </div>
+
+        <div class="p-4">
+          <h4>Useful links</h4>
+          <ol class="list-unstyled mb-0">
+            <li title="Movies/Series"><a href="browse" id="browse" style="color:inherit; cursor: pointer;">Browse More</a></li>
+            <li title="Top IMDB List"><a href="top-imdb" id="top-imdb" style="color:inherit; cursor: pointer;">Top 100 IMDB Movies</a></li>
+            <!--
+              <li><a href="#">All movies</a></li>
+            <li><a href="#">Blogs</a></li>
+            <li><a href="#">December 2020</a></li>
+            <li><a href="#">November 2020</a></li>
+            <li><a href="#">October 2020</a></li>
+            <li><a href="#">September 2020</a></li>
+            <li><a href="#">August 2020</a></li>
+            <li><a href="#">July 2020</a></li>
+            <li><a href="#">June 2020</a></li>
+            <li><a href="#">May 2020</a></li>
+            <li><a href="#">April 2020</a></li>
+            -->
+          </ol>
+        </div>
+
+        <div class="p-4">
+          <h4 class="fst-italic">Also visit</h4>
+          <ol class="list-unstyled">
+            <li title="GitHub"><a href="https://github.com/niksingla/nik_webApp" style="color:inherit;" target="_blank">GitHub</a></li>
+            <!--
+              <li><a href="#">Twitter</a></li>
+            <li><a href="#">Facebook</a></li>
+            -->
+            
+          </ol>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!-----------------DIV row g-5------------->
+</div>
+
+<script src="{% static 'cool_fts/scripts/entertainment.js' %}"></script>
+<div hidden>
+  <a href="https://icons8.com/icon/12246/imdb">IMDb icon by Icons8</a>
+  <a href="https://icons8.com/icon/BkWfN4ADvwXc/tomato">Tomato icon by Icons8</a>
+</div>
+<script>
+  window.onload = function() {
+    var x = document.querySelector('footer')
+    x.style.backgroundColor = 'unset'
+  }  
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<script>
+  (function () {
+    'use strict';
+    document.getElementById('contact').className = "nav-link active";
+  })();
+</script>
+
+
+<!-- Use this to show anything on top-left(change top text in views)   <meta id="user" data-top="{{top}}">
+    <script>
+      (function() {
+         'use strict';
+         var username = $('#user').data("top");
+         document.getElementById("top-left").innerHTML = username;         
+       })();
+   </script> -->
+{% csrf_token %}
+<main>
+  <!-- <img src="{% static 'userid/nik.png' %}" alt="no image">-->
+
+  <style>
+    .container.nik {
+      height: fit-content;
+      width: fit-content;
+    }
+  </style>
+  <div class="container nik mb-4">
+
+    <!--Section: Contact v.2-->
+
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-4">Contact us</h2>
+    <!--Section description-->
+    <p class="text-center w-responsive mx-auto mb-2">Do you have any suggestions? Please do not hesitate to mention below
+      directly.</p>
+
+    <div class="container">
+
+      <!--Grid column-->
+      <div class="container p-4">
+        
+        <form class="needs-validation" id="contact-form" name="contact-form" action="#" method="POST">
+          {% csrf_token %}   
+
+          <!--Grid row-->
+          <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-6">
+              <div class="md-form mb-2">
+                <input type="text" id="name" placeholder="Your Name" name="name" class="form-control">
+                
+              </div>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-6">
+              <div class="md-form mb-2">
+                <input type="email" id="email" placeholder="Your email address" name="email" class="form-control">
+                <div class="invalid-feedback">
+                  Please enter a valid email address.
+                </div>
+                
+              </div>
+            </div>
+            <!--Grid column-->
+
+          </div>
+          <!--Grid row-->
+
+          <!--Grid row-->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="md-form mb-2">
+                <input type="text" id="subject" placeholder="Subject" name="subject" class="form-control">
+                
+              </div>
+            </div>
+          </div>
+          <!--Grid row-->
+
+          <!--Grid row-->
+          <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-12">
+
+              <div class="md-form">
+                <textarea type="text" id="message" name="message" placeholder="Your message"  style="min-height: 200px;" class="form-control md-textarea"></textarea>
+                
+              </div>
+
+            </div>
+          </div>
+          <!--Grid row-->
+
+        </form>
+
+        <div class="text-center text-md-left">
+          <a class="btn btn-primary" onclick="document.getElementById('contact-form').submit();">Send</a>
+        </div>
+        <div class="status"></div>
+      </div>
+      <!--Grid column-->
+
+      <!--Grid column-->
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <i class="fas fa-map-marker-alt fa-2x"></i>
+            <p>Punjab, 147201, IN</p>
+          </div>
+          <div class="col-md-6">
+            <i class="fas fa-phone fa-2x"></i>
+            <p>+91 XX XXX XXX XX</p>  
+          </div>
+          <div class="mt-auto">
+            <i class="fas fa-envelope fa-2x"></i>
+            <p>contactnikhil@gmail.com</p>  
+          </div>
+            
+          
+        </div>
+      </div>
+        
+      
+      <!--Grid column-->
+
+    </div><!-- Container div closing-->
+
+
+  </div>
+
+
+
+
+</main>
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+  (function() {
+    'use strict';
+    
+    window.addEventListener('load', function() {
+      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+      var forms = document.getElementsByClassName('needs-validation');
+
+      // Loop over them and prevent submission
+      var validation = Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {                            
+          if (form.checkValidity() === false) {
+             event.preventDefault();
+             event.stopPropagation();                 
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+
+
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static%}
+<script>
+    document.getElementById('features').className = "nav-link active";
+  </script>
+
+<div class="container">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+
+                <th class="text-white" scope="col">
+                    <a href="." style="text-decoration: none; color: inherit;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-backspace-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z" />
+                        </svg>
+                        <i class="bi bi-backspace-fill"></i>
+                        Back to previous page</a>
+                </th>
+
+            </tr>
+        </thead>
+        <thead>
+            <tr>
+
+                <th class="text-white" scope="col"><a title="Top 100 movies(IMDB)"
+                        style="text-decoration: none; color: inherit;" href="">TOP 100 IMDB MOVIES</a></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for name,link in names_links%}
+            <tr>
+                <th class="text-white" scope="row"><a target="_blank" style="text-decoration: none; color: inherit;"
+                        href="{{link}}">{{name}}</a></th>
+
+            </tr>
+            {%endfor%}
+
+
+        </tbody>
+
+
+    </table>
+    <ul class="pagination">
+        {%if page.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page=1" aria-label="First">
+                <span aria-hidden="true">First</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{page.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true">Previous</span>
+            </a>
+        </li>
+        {%else%}
+
+        <li class="page-item disabled">
+            <a class="page-link">Previous</a>
+        </li>
+        {%endif%}
+
+        {%if page.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{page.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">Next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="?page={{count}}" aria-label="Last">
+                <span aria-hidden="true">Last</span>
+            </a>
+        </li>
+        {%else%}
+        <li class="page-item disabled">
+            <a class="page-link">Next</a>
+        </li>
+        {%endif%}
+    </ul>
+</div>
+
+
+{% endblock %}

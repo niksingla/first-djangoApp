@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static%}
+<style>
+    .row.g-0{
+        background-color: rgba(255, 255, 255, 0.04);
+        border: 4px solid;
+    }
+</style>
+<script>
+    document.title= 'My Projects'
+    document.getElementById('projects').className = "nav-link active";
+</script>
+<div class="container">
+    <div class="mx-auto" style="max-width: fit-content;">
+        <h2>My recent projects</h2>
+    </div>
+    
+    <div class="container">
+         <!--Entertainment App-->
+    <div class="col-md-6 mx-auto">
+        <div class="row g-0 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Movie/Series Suggestions</h3>
+                <div class="mb-1 text-muted">Python with Django</div>
+                <p class="card-text ">This app is made by me to suggest movies/tv series to the users. It includes the usage of web scraping and REST APIs.</p>
+                <a class="stretched-link" href="/features/entertainment" style="color:inherit ;">Click here to check</a>
+            </div>
+            <div class="col-auto d-none d-lg-block" style="max-width: 200px; height:inherit;">
+                <img src="https://live.staticflickr.com/65535/49804428988_fce7983e20_z.jpg" style="width:100%; height: 100%; object-fit: cover;" alt="">
+                <!--
+                <svg class="bd-placeholder-img" id="movie-thumb" width="200" style="height: 100%;" xmlns="http://www.w3.org/2000/svg"
+                    role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice"
+                    focusable="false">
+                    <image href="https://live.staticflickr.com/65535/52078080915_d8e040753c_4k.jpg" style="object-fit:contain"/>
+                    
+                        <title>Placeholder</title>
+                    <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%"
+                        fill="#eceeef" dy=".3em">Thumbnail</text>
+                    -->
+                    
+                </svg>
+            </div>
+        </div>
+    </div>
+   
+   <!--Screen Resolution-->
+    <div class="col-md-6 mx-auto">
+        <a href="screen" style="text-decoration:none; color:inherit;">
+        <div class="row g-0 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Resolution(in pixels)</h3>
+                <div class="mb-1 text-muted">Javascript</div>
+                <p class="card-text ">This app shows the screen and window size dynamically on resizing.</p>
+                <p>Check this out!</p>
+            </div>
+            
+        </div>
+        </a>
+    </div>
+    <div class="col-md-6 mx-auto">
+        <a href="/features/entertainment/browse" style="text-decoration:none; color:inherit;">
+        <div class="row g-0 overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+            <div class="col p-4 d-flex flex-column position-static">
+                <h3 class="mb-0">Search your favourite content</h3>
+                <div class="mb-1 text-muted">Python and Django</div>
+                <p class="card-text ">This app search the query and shows the results</p>
+                <p>Check this out!</p>
+            </div>
+            
+        </div>
+        </a>
+    </div>
+    </div>
+    
+</div>
+
+{% endblock %}

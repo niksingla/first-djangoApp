@@ -1,0 +1,4 @@
+my_site/.env
+db.sqlite3
+chromedriver.exe
+.env

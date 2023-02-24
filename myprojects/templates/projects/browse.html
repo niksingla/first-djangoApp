@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%load static%}
+<script>
+    document.title= 'Browse - Movies, Episodes, Web Series'
+    document.getElementById('features').className = "nav-link active";
+  </script>
+<script>
+    window.onload = function() {
+      var x = document.querySelector('footer')
+      x.style.backgroundColor = 'unset'
+    }  
+  </script>
+<style>
+    body::before {
+      content: '';
+      background: url('https://live.staticflickr.com/65535/52078080915_d8e040753c_4k.jpg') ;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      position: fixed;
+      opacity: 0.2;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+  </style>
+
+<!--Trailer Modal-->
+
+<!-- Button trigger modal 
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#trailerModal">
+    Launch demo modal
+  </button>
+-->
+  
+  <!-- Modal -->
+  <style>
+    #trailerModal .modal-content{
+        background-color: #b2abab;
+    }
+    
+  </style>
+  <div class="modal fade" id="trailerModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="trailerModalLabel" aria-hidden="true">
+    <div class="modal-dialog text-black" style="max-width:90%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="trailerModalLabel"></h5>
+          <button onclick="stopvid()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <video class="w-100" style="max-height: 480px;" active="" id="trailervideo" src="" controls hidden></video>
+            <div class="spinner-border" id="trailerloader" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button onclick="stopvid()" id="trailerbtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="container" style="width:max-content;">
+    <h2>Search any movies or series</h2>
+    
+    <form id="searchQ" onsubmit="searchBtn()" method="post">
+        {% csrf_token %}
+        <input type="search" id="searchInput" name="query" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+    <input type="button" onclick="searchBtn()" class="btn btn-primary btn-lg mt-2" value="Search"></input>
+    </form> 
+</div>
+
+<div class="container results-section">
+    {% if search %}
+        <h3>Search Results:</h3>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 g-3">
+            <style>
+                .card{
+                    background-color: rgba(0,0,0, 0.5);
+                }
+            </style>
+            {% for result in results%}
+            <imdb hidden>{{result.imdbID}}</imdb>
+            
+                <div class="col" title="{{result.Title}} ({{result.Year}})">
+                    <div class="card">
+                        <div class="container p-2" style="height:216px; width:172px">
+                            <img class="w-100 h-100" src="{{result.Poster}}" alt="{% static 'cool_fts/noposter' %}.jpg"> 
+                        </div>
+                        <div class="card-body text-white">
+                            <a class="imdbLink" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration: none;" href="">
+                            <p class="card-text"><strong><rtype>{{result.Type}}</rtype></strong>: {{result.Title}} ({{result.Year}})</p>
+                            </a>
+                          <div class="justify-content-between align-items-center">
+                              <button name="{{result.Title}}" imdb="{{result.imdbID}}" onclick="trailerClk(event);" type="button" class="btn btn-sm btn-outline-secondary mt-1" data-bs-toggle="modal" data-bs-target="#trailerModal">Watch Trailer</button>
+                          </div>
+                        </div>
+                      </div>
+                </div>
+            
+            <!--<div class="col" hidden id="{{result.Title}}">
+                <iframe src="https://www.imdb.com/video/imdb/vi1376109081/imdb/embed?autoplay=false&width=480" width="480" height="270" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true" frameborder="no" scrolling="no"></iframe>
+            </div>-->
+            {%endfor%}
+        </div>
+        <!--<a id="imdbLink" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration: none;" href="">-->
+        <!--<div class="container loadmore">
+            <br><button class="btn btn-outline-light btn-sm mt-1 loadmore-btn" onclick="loadmore();" type="button">Load more</button>
+            <span class="spinner-border" role="status" hidden>
+                <span class="visually-hidden">Loading...</span>
+            </span>
+        </div>-->
+    {%endif%}
+</div>
+<form action="/apis/imdb-trailer/" class="trailerform" onsubmit="trailerSubmit(event)" method="post" hidden>
+    {% csrf_token %}
+    <input name="id" type="text" hidden>
+    <input name="title" type="text" hidden> 
+    <button id="trailbtn" hidden type="submit"></button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="{% static 'cool_fts/scripts/searching.js' %}"></script>
+<script>
+    /*function loadmore(){
+        var pageno = 0;
+        document.querySelector('.results-section .spinner-border').hidden = false
+        document.querySelector('.results-section .loadmore-btn').hidden = true
+    }*/
+    if(document.querySelector('.results-section > h3')!= null){
+        document.querySelector('.results-section > h3').innerHTML += ' ' + localStorage.getItem('search_query')
+        document.querySelector('#searchInput').value = localStorage.getItem('search_query')
+    }
+    document.querySelector('#trailerModal').addEventListener('keydown', function(event){
+	if(event.key === "Escape"){
+		stopvid();
+	}
+});    
+    function cardSet(){
+        const types = document.querySelectorAll('rtype')
+        /*if(types.length <10){
+            document.querySelector('.loadmore').hidden = true
+        } */
+        for(let i=0; i<types.length;i++){
+            types[i].innerHTML = (types[i].innerHTML).charAt(0).toUpperCase()+(types[i].innerHTML).slice(1)
+        }
+        const rlinks = document.querySelectorAll('.imdbLink')
+        const imdbIDs = document.querySelectorAll('imdb')
+        for(let i=0; i<rlinks.length;i++){
+            var temp = "https://www.imdb.com/title/" + imdbIDs[i].innerHTML
+            rlinks[i].setAttribute('href', temp) 
+        }
+        const cards = document.querySelectorAll("div.card")
+        for(let i=0;i<cards.length;i++){
+            if((cards[i].querySelector('img')).getAttribute('src')=="N/A"){
+                (cards[i].querySelector('img')).setAttribute('src', '/static/cool_fts/noposter.jpg')
+            }
+        }
+    }
+    cardSet();
+    function loadertrailer(){
+        var videomodal = document.querySelector('video#trailervideo')
+        if(videomodal.getAttribute('src')==''){
+            console.log('trailer loading...')
+        }
+    }
+    function trailerClk(event){
+        var im = event.target.getAttribute('imdb')
+        var nm = event.target.getAttribute('name')
+        localStorage.setItem('trailerID', im)
+        localStorage.setItem('trailerName', nm)
+        document.querySelector('h5#trailerModalLabel').innerHTML = nm
+        document.querySelector('#trailbtn').click()
+        document.querySelector('video#trailervideo').hidden= true
+        document.querySelector('#trailerloader').hidden = false
+        loadertrailer();
+    }
+    function trailerSubmit(event){
+        event.preventDefault()
+        document.querySelector("input[name='id']").value =  localStorage.getItem('trailerID')
+        document.querySelector("input[name='title']").value = localStorage.getItem('trailerName')   
+        fetch(event.target.action,{
+            method: 'POST',
+            body: new URLSearchParams(new FormData(event.target))
+        }).then(res=>res.text())
+        .then(data=>{
+            if(data != 'Failed'){
+                videosrc = document.querySelector('video#trailervideo')
+                videosrc.setAttribute('src',data)
+                document.querySelector('#trailerloader').hidden = true
+                videosrc.hidden= false
+            }
+            else{
+                document.querySelector('button#trailerbtn').click()
+                alert('Trailer Not Found')
+            }
+        })
+        .catch(err=>{
+            document.querySelector('button#trailerbtn').click();
+            alert('Trailer Not Found')
+        })
+    }
+    function stopvid(){
+        document.querySelector('video#trailervideo').setAttribute('src','')
+    }
+  </script>
+<script>
+    function searchBtn(){
+        var searchInput = document.querySelector('#searchInput')
+        if(searchInput.value == ""){
+            alert('Enter Something in the searchbox')
+            return;
+        }
+        console.log(searchInput.value)
+        localStorage.setItem('search_query', searchInput.value)
+        document.querySelector('#searchQ').submit()
+    }
+</script>
+
+{% endblock %}

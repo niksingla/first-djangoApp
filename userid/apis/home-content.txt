@@ -1,0 +1,28 @@
+
+<div class="container">
+    <div>
+      <h6 class="text-muted">Latest updates</h6>
+      <hr><br>
+    </div>
+    
+    <div class="row mb-2">
+      {% for title,link,time,desc,image,query in titles_links_times_descs_images_query %}
+      <div class="col-md-6" title="{{query}} News">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col p-4 d-flex flex-column position-static">
+            <h4 class="mb-0">{{title}}</h4>
+            <div class="mb-1 text-muted">{{time}}</div>
+            <p class="card-text mb-auto">{{desc}}</p>
+            <a href="{{link}}" style="color: inherit;" class="stretched-link">[Continue reading]</a>
+          </div>
+
+          <div class="col-auto d-none d-lg-block">
+            <img class="bd-placeholder-img" width="130" height="120" src="{{image}}" style="object-fit:fill;"  aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"></img>
+  
+          </div>
+          
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>

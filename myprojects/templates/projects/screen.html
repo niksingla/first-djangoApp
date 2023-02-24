@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    .col {
+        min-width: max-content;
+    }
+</style>
+<table class="table mx-auto table-dark" style="width: max-content;">
+    <tbody>
+        <tr>
+            <td style="border-right:1px solid ;">
+                <h2 >Device screen</h2>
+            </td>
+            <td>
+                <h2 class="screen-resolution"></h2>
+            </td>
+
+        </tr>
+        <tr>
+            <td style="border-right:1px solid ;">
+                <h2>Window size</h2> 
+            </td>
+            <td>
+                <h2 class="disp-resolution"></h2>
+            </td>
+
+        </tr>
+    </tbody>
+
+
+</table>
+<p class="text-muted">(Window size changes on window resize)</p>
+
+<script>
+
+
+    document.querySelector('.disp-resolution').innerHTML = window.innerWidth + 'x' + window.innerHeight
+    document.querySelector('.screen-resolution').innerHTML = screen.width + 'x' + screen.height
+    /*
+    const heightOutput = document.querySelector('#height');
+    const widthOutput = document.querySelector('#width');
+    */
+
+    function reportWindowSize() {
+        /*
+        heightOutput.textContent = window.innerHeight;
+      widthOutput.textContent = window.innerWidth;
+        */
+        document.querySelector('.disp-resolution').innerHTML = window.innerWidth + 'x' + window.innerHeight
+        document.querySelector('.screen-resolution').innerHTML = screen.width + 'x' + screen.height
+
+
+    }
+
+    window.onresize = reportWindowSize;
+</script>
+{% endblock %}
